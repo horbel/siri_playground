@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import MobileCoreServices
+import PDFKit
 
 class ViewController: UIViewController, AVSpeechSynthesizerDelegate, UIDocumentPickerDelegate {
     @IBOutlet weak var textView: UITextView!
@@ -23,16 +24,30 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, UIDocumentP
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        synthesizer.delegate = self;
+        synthesizer.delegate = self
+        documentPickerController.delegate = self
     }
     
     @IBAction func loadPdfClicked(_ sender: Any) {
-        documentPickerController.delegate = self
         present(documentPickerController, animated: true, completion: nil)
     }
     
-    func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL){
+    func documentPicker(_ controller: UIDocumentPickerViewController,
+                                didPickDocumentAt url: URL) {
         print(url);
+        
+        if let pdf = PDFDocument(url: url) {
+            let pageCount = pdf.pageCount
+            let documentContent = NSMutableAttributedString()
+
+            for i in 1 ..< pageCount {
+                guard let page = pdf.page(at: i) else { continue }
+                guard let pageContent = page.attributedString else { continue }
+                documentContent.append(pageContent)
+            }
+            
+            textView.attributedText = documentContent
+        }
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
