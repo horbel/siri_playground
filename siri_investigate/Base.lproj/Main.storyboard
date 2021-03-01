@@ -45,6 +45,15 @@
                                     <action selector="readButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CYP-EO-PsZ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Akj-Ws-gAw">
+                                <rect key="frame" x="157" y="650" width="101" height="41"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Load PDF"/>
+                                <connections>
+                                    <action selector="loadPdfClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hde-CJ-1wa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -55,7 +64,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-201.44927536231884" y="75"/>
+            <point key="canvasLocation" x="-710" y="-210"/>
         </scene>
     </scenes>
     <resources>

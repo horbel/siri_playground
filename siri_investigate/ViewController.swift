@@ -7,8 +7,9 @@
 
 import UIKit
 import AVFoundation
+import MobileCoreServices
 
-class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
+class ViewController: UIViewController, AVSpeechSynthesizerDelegate, UIDocumentPickerDelegate {
     @IBOutlet weak var textView: UITextView!
     
     @IBAction func readButton(_ sender: Any) {
@@ -16,10 +17,22 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     let synthesizer = AVSpeechSynthesizer()
-
+    let manager = FileManager.default
+    
+    let documentPickerController = UIDocumentPickerViewController(documentTypes: [String(kUTTypePDF), String(kUTTypeImage), String(kUTTypeMovie), String(kUTTypeVideo), String(kUTTypePlainText), String(kUTTypeMP3)], in: .import)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         synthesizer.delegate = self;
+    }
+    
+    @IBAction func loadPdfClicked(_ sender: Any) {
+        documentPickerController.delegate = self
+        present(documentPickerController, animated: true, completion: nil)
+    }
+    
+    func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL){
+        print(url);
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
