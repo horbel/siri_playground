@@ -10,15 +10,38 @@ import AVFoundation
 import MobileCoreServices
 import PDFKit
 
-class ViewController: UIViewController, AVSpeechSynthesizerDelegate, UIDocumentPickerDelegate {
+class ViewController: UIViewController, AVSpeechSynthesizerDelegate, UIDocumentPickerDelegate,
+                      UIImagePickerControllerDelegate,
+                      UINavigationControllerDelegate{
     @IBOutlet weak var textView: UITextView!
     
+    @IBAction func openCamera(_ sender: Any) {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            var imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .camera;
+            imagePicker.allowsEditing = false
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
     @IBAction func readButton(_ sender: Any) {
         voiceText()
     }
     
     let synthesizer = AVSpeechSynthesizer()
     let manager = FileManager.default
+    
+    @IBOutlet weak var imagePicked: UIImageView!
+    
+    @IBAction func openCameraButton(sender: AnyObject) {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            var imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .camera;
+            imagePicker.allowsEditing = false
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
     
     let documentPickerController = UIDocumentPickerViewController(documentTypes: [String(kUTTypePDF), String(kUTTypeImage), String(kUTTypeMovie), String(kUTTypeVideo), String(kUTTypePlainText), String(kUTTypeMP3)], in: .import)
     
@@ -33,13 +56,13 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, UIDocumentP
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController,
-                                didPickDocumentAt url: URL) {
+                        didPickDocumentAt url: URL) {
         print(url);
         
         if let pdf = PDFDocument(url: url) {
             let pageCount = pdf.pageCount
             let documentContent = NSMutableAttributedString()
-
+            
             for i in 1 ..< pageCount {
                 guard let page = pdf.page(at: i) else { continue }
                 guard let pageContent = page.attributedString else { continue }
